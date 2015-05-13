@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% include 'execution_base.html' %}
+
+{% block content %}
+
+
+<div id="page-wrapper" class = "col-lg-12">
+
+            <div class="container-fluid">
+				
+                <!-- Page Heading -->
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">Current Test Plans
+                             
+                        </h1>
+                        
+                    </div>
+                    <ol class="breadcrumb">
+						  <li><a href="/">Home</a></li>
+						  <li class="active">Test Plans</li>
+					</ol>
+                </div>
+                <!-- /.row -->
+
+                <div class="row">
+                    
+                    
+                <div>
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+         
+        <!-- /#page-wrapper -->
+
+    </div>
+    
+   
+   
+   <div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">Current test plans: <b>{{ testplans.count }}</b></div>
+  <div class="panel-body">
+   
+  
+
+  <!-- List group -->
+  <ul class="list-group">
+  
+
+{% for item in dict_obj %}
+   <p><li class="list-group-item"><h3><a href="/execution/get/{{ item.testplan.id }}/">{{item.testplan.title}}</a><a class="btn btn-primary pull-right noprint" role="button" href="/execution/exporttohtml/?tp_id={{item.testplan.id}}">Report</a></p></h3>
+   <h4>Started On: {{item.testplan.start_date}} </h4>
+
+   <div class="progress">
+  <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="{{ item.status }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ item.status }}%">
+    {{ item.status }}%
+  </div>
+	</div>
+    
+    </li>
+
+   </ul>
+</div>	
+</div>
+{% if user.groups.all.0.name == "qa_lead" %}
+<a class="btn btn-primary" href="/execution/start/" role="button">Create New Test Plan</a>
+{%endif%}
+
+{%endfor%}
+
+                    
+{% endblock %}
+
+
+
+

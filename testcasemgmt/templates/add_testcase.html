@@ -1,0 +1,55 @@
+{% extends 'testcase_index.html' %}
+{% block page_header %}
+<div class="col-lg-6">
+    <h1 class="page-header">
+        Add TestCase
+    </h1>
+</div>
+{% endblock %}
+{% block content %}
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">Add TestCase</h3>
+            </div><!-- /.box-header -->
+            {% if message != "" %}
+            <div class="alert alert-success" role="alert">{{message}}</div>{% endif %}
+            <form role="form" action="/testcase/add/" method="post">{% csrf_token %}
+                <div class="box-body">
+                    <div class="form-group">
+                        <label>Project</label>
+                        <select class="form-control" id="project" name="project" onchange="load_categories();">
+                            {% for project in projects %}
+                                <option value={{project.id}}>{{project.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select class="form-control" id="category" name="category">
+                            {% block load_category %}
+                            {% endblock %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Summary</label>
+                        <input id="title" name="title" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Steps for execution</label>
+                        <textarea id="steps" name="steps" class="form-control" rows="3"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Expected Result</label>
+                        <textarea id="expected_result" name="expected_result" class="form-control" rows="3"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Add</button>
+                    <button type="reset" class="btn btn-default">Reset</button>
+                </div>
+
+            </form>
+        </div>
+
+{% endblock %}

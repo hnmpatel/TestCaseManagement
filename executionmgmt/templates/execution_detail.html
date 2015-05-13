@@ -1,0 +1,338 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="page-wrapper" class = "col-lg-12">
+
+            <div class="container-fluid">
+				
+                <!-- Page Heading -->
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            {{execution.title}} 
+                        </h1>
+                        
+                    </div>
+                </div>
+                <!-- /.row -->
+
+                <div class="row">
+                    
+                    
+                <div>
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+         
+        <!-- /#page-wrapper -->
+
+    </div>
+    <div class="panel panel-warning">
+  <div class="panel-body">
+    {{ execution.description }}
+  </div>
+</div>
+       <div class="progress">
+  <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="{{ execution.status }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ execution.status }}%">
+    Overall Progress: {{ execution.status }}%
+  </div>
+	</div>
+	
+    <div class="row" >
+    				 <div class="col-lg-12">
+    				 <div  style="max-height:470px">
+                        <div  class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><i class="fa fa-clock-o fa-fw"></i> Execution Summary</h3>
+                            </div>
+                            <div class="panel-body" >
+                                <div class="list-group">
+                                
+                                	<a href="#" class="list-group-item">
+                                        <span class="badge">{{ execution.start_date }}</span>
+                                        <span class="glyphicon glyphicon-calendar"></span> Started On
+                                    </a>
+                                    <a href="#" class="list-group-item">
+                                        <span class="badge">{{ execution.started_by }}</span>
+                                        <span class="glyphicon glyphicon-user"></span> Started By
+                                    </a>
+                                    <a href="#" class="list-group-item">
+                                        <span class="badge">{{ execution.status }}%</span>
+                                        <span class="glyphicon glyphicon-ok"></span> Overall Execution status
+                                    </a>
+                                    
+                                    <a href="/execution/get/{{ execution.id }}/filter/?by=all" class="list-group-item">
+                                        <span class="badge">{{ execution.executionhistory_set.count }}</span>
+                                        <span class="glyphicon glyphicon-ok"></span> Total no. of Testcases
+                                    </a>
+                                    
+                                    <a href="/execution/get/{{ execution.id }}/filter/?by=executed" class="list-group-item">
+                                        <span id="executed" class="badge"></span>
+                                        <span class="glyphicon glyphicon-ok"></span> No. of Testcases executed
+                                    </a>
+                                    <a href="/execution/get/{{ execution.id }}/filter/?by=pass" class="list-group-item">
+                                        <span id="passed" class="badge"></span>
+                                        <span class="glyphicon glyphicon-ok"></span> No. of Testcases Passed
+                                    </a>
+                                    
+                                    <a href="/execution/get/{{ execution.id }}/filter/?by=fail" class="list-group-item">
+                                        <span id="failed" class="badge"></span>
+                                        <span class="glyphicon glyphicon-ok"></span> No. of Testcases Failed
+                                    </a>
+                                    
+                                    <a href="/execution/get/{{ execution.id }}/filter/?by=nap" class="list-group-item">
+                                        <span id="nap" class="badge"></span>
+                                        <span class="glyphicon glyphicon-ok"></span> No. of Testcases Not Applicable
+                                    </a>
+                                    
+                                    <a href="/execution/get/{{ execution.id }}/filter/?by=ne" class="list-group-item">
+                                        <span id="ne" class="badge"></span>
+                                        <span class="glyphicon glyphicon-ok"></span> No. of Testcases Not Executed
+                                    </a>
+                                   
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><i class="fa fa-long-arrow-right"></i> Execution Status</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+   <!-- <div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Execution Title</h3>
+  </div>
+  <div class="panel-body">
+    {{execution.title}}
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Created by</h3>
+  </div>
+  <div class="panel-body">
+    {{execution.started_by}} - {{execution.started_by.email}} 
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Description</h3>
+  </div>
+  <div class="panel-body">
+    {{execution.description}}
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">On Version</h3>
+  </div>
+  <div class="panel-body">
+    {{execution.version}}
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Started On</h3>
+  </div>
+  <div class="panel-body">
+    {{execution.start_date}}
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Total no. of Testcases</h3>
+  </div>
+  <div class="panel-body">
+    {{execution.executionhistory_set.count }}
+  </div>
+</div>
+
+<!--  <div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Categories included</h3>
+  </div>
+  <div class="panel-body">
+  	{% if execution.execution_history > 0  %}
+	    <ul class="list-group">
+	    	{% for category in categories %}
+	    		<li class="list-group-item">{{ category.name }} -- {{category.description}} </li>
+	    	{% endfor %}
+	  	</ul>
+	{% else %}
+		<div class="panel-body">
+    		No Categories found!!
+  		</div>
+  	{% endif %}
+  	<a class="btn btn-primary" href="/project/{{ project.id }}/category/add/" role="button">Add New Category</a>
+  </div>
+</div>--> 
+<div class="row">
+                    <div class="col-sm-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Project</h3>
+                            </div>
+                            <div class="panel-body">
+                                {{execution.project}}
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <!-- /.col-sm-4 -->
+                    <div class="col-sm-4">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Categories</h3>
+                            </div>
+                            <div class="panel-body">
+                                
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <!-- /.col-sm-4 -->
+                    <div class="col-sm-4">
+                        <div class="panel panel-warning">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Panel title</h3>
+                            </div>
+                            <div class="panel-body">
+                                Panel content
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <!-- /.col-sm-4 -->
+                    
+                </div>
+  
+{% with execution.executionhistory_set.all|first as first %}
+	
+<a class="btn btn-primary" href="/execution/execute/{{ execution.id }}/tc/{{ first.id }}" role="button">Start Executing</a>
+
+<script>
+$(function() {
+	var total_tc = parseInt("{{ execution.executionhistory_set.count }}");
+	var passed_tc = parseInt("{{execution.passed}}");
+	var failed_tc = parseInt("{{execution.failed}}");
+	var nap_tc = parseInt("{{execution.nap}}");
+	var ne_tc = total_tc-(passed_tc+failed_tc+nap_tc);
+	
+	
+	$("#passed").text("{{execution.passed}}");
+	$("#failed").text("{{execution.failed}}");
+	$("#nap").text("{{execution.nap}}");
+	$("#executed").text(passed_tc+failed_tc+nap_tc);
+	$("#ne").text(ne_tc);
+	
+	//data for graph.
+	var passed_per = ( passed_tc / total_tc ) * 100
+	var failed_per = ( failed_tc / total_tc ) * 100
+	var nap_per = ( nap_tc / total_tc ) * 100
+	var ne_per = 100 - (passed_per+failed_per+nap_per);
+	console.log(passed_per);
+	console.log(failed_per);
+	console.log(nap_per);
+	console.log(ne_per);
+	
+	$("#container").highcharts({
+		
+		colors: ['#173B0B','#FF0000', '#BDBDBD','#F2F5A9'],
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false
+        },
+        title: {
+            text: 'Execution summary of testcases'
+        },
+        tooltip: {
+            pointFormat: '{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        },
+        series: [{
+            type: 'pie',
+            
+            data: [
+                ['Passed',   passed_per],
+                ['Failed',   failed_per],
+                ['Not Executed', ne_per],
+                ['Not Applicable', nap_per],
+            ]
+        }]
+    });
+
+
+	
+  /*      var data = [{
+        	label: "Not Applicable",
+            data: nap_per
+            
+        }, {
+        	label: "Not Executed",
+            data: ne_per
+            
+        }, {
+        	label: "Failed",
+            data: failed_per
+        }, {
+        	label: "Passed",
+            data: passed_per
+        }];
+
+        var plotObj = $.plot($("#flot-pie-chart"), data, {
+            series: {
+                pie: {
+                	
+                    show: true,
+                    
+                    
+                }
+            },
+            grid: {
+                hoverable: true
+            },
+            tooltip: true,
+            tooltipOpts: {
+                content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                shifts: {
+                    x: 20,
+                    y: 0
+                },
+                defaultTheme: false
+            }
+        });*/
+
+    });
+</script>
+ 
+ {% endwith %}                   
+{% endblock %}
+
+

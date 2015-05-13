@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %} User | Register {% endblock %}
+{% block content %}
+
+	<form class="form-horizontal" action="/accounts/register/" method="post">{% csrf_token %}
+	<fieldset>
+	
+	<!-- Form Name -->
+	<legend>Registration</legend>
+	
+	<!-- Text input-->
+	<div class="control-group">
+	  <label class="control-label" for="username">User Name</label>
+	  <div class="controls">
+	    <input id="username" name="username" placeholder="username" class="input-large" required="" type="text">
+	    <p class="help-block">Ex. hpatel</p>
+	  </div>
+	</div>
+	
+	<!-- Text input-->
+	<div class="control-group">
+	  <label class="control-label" for="first_name">First Name</label>
+	  <div class="controls">
+	    <input id="first_name" name="first_name" placeholder="first name" class="input-large" type="text">
+	  </div>
+	</div>
+	
+	<!-- Text input-->
+	<div class="control-group">
+	  <label class="control-label" for="last_name">Last Name</label>
+	  <div class="controls">
+	    <input id="last_name" name="last_name" placeholder="last name" class="input-large" required="" type="text">
+	  </div>
+	</div>
+	
+	<!-- Password input-->
+	<div class="control-group">
+	  <label class="control-label" for="password1">Password</label>
+	  <div class="controls">
+	    <input id="password1" name="password1" placeholder="password" class="input-large" required="" type="password">
+	  </div>
+	</div>
+	
+	<!-- Password input-->
+	<div class="control-group">
+	  <label class="control-label" for="password2">Retype Password</label>
+	  <div class="controls">
+	    <input id="password2" name="password2" placeholder="retype-password" class="input-large" required="" type="password"> 
+	  </div>
+	</div>
+	
+	<!-- Text input-->
+	<div class="control-group">
+	  <label class="control-label" for="email">Email ID</label>
+	  <div class="controls">
+	    <input id="email" name="email" placeholder="Email id" class="input-large" required="" type="text">
+	    <p class="help-block">hpatel@domain.com</p>
+	  </div>
+	</div>
+	
+	<!-- Button -->
+	<div class="control-group">
+	  <label class="control-label" for="register"></label>
+	  <div class="controls">
+	    <button id="register" name="register" class="btn btn-primary">Register</button>
+	  </div>
+	</div>
+	
+	</fieldset>
+	</form>
+
+
+{% endblock %}

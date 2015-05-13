@@ -1,0 +1,678 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% csrf_token %}
+
+<div id="page-wrapper" class = "col-lg-12">
+
+            <div class="container-fluid">
+				
+                <!-- Page Heading -->
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                          	Testcase Execution for: {{testplan.title}} <small>{{execution_task.title}}</small>
+                        </h1>
+                        
+                    </div>
+                  
+                </div>
+                <!-- /.row -->
+
+                <div class="row">
+                    
+                    
+                <div>
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+         
+        <!-- /#page-wrapper -->
+<div class="row">
+
+
+<!--<label class="col-lg-2 control-label" for="project">Filter by:</label>
+
+  <div class="col-lg-4">
+    <select id="result" name="result" class="form-control">
+    <option value="all">All</option>
+      <option value="pass">PASS</option>
+      <option value="fail">FAIL</option>
+      <option value="nap">Not Applicable</option>
+      <option value="executed">All Executed</option>
+      <option value="ne">Not executed</option>
+    </select>
+  </div>
+-->
+
+  <div class="panel-body">
+    <label style="margin-right: 10px;" class="">
+              <input type="checkbox" id="check-all">
+   </label>
+    <!-- Action button -->
+    <div class="btn-group">
+        <button type="button" class="btn btn-default btn-sm btn-flat dropdown-toggle" data-toggle="dropdown">
+            Action <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Mark as read</a></li>
+            <li><a href="#">Mark as unread</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Move to junk</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Delete</a></li>
+        </ul>
+    </div>
+    <button class="btn btn-warning col-lg-1 margin pull-right" id="comment_btn">Comment</button>
+    <button class="btn btn-info col-lg-1 margin pull-right" id="nap_btn">NAp</button>
+    <button class="btn btn-danger col-lg-1 margin pull-right" id="fail_btn">FAIL</button>
+    <button class="btn btn-success col-lg-1 margin pull-right" id="pass_btn">PASS</button>
+  </div>
+
+<!--<div class="col-lg-12">
+	<button class="btn btn-success" id="pass_btn">PASS</button>
+    <button class="btn btn-danger" id="fail_btn">FAIL</button>
+    <button class="btn btn-info" id="nap_btn">NAp</button>
+    <button class="btn btn-warning" id="comment_btn">Comment</button>
+</div>-->
+
+</div>
+		
+		
+   		<div class="col-lg-12">
+   			
+                      
+                        
+                            <table id="result_table" class="table table-bordered" cellspacing="0" >
+                                <thead>
+                                    <tr>
+                                    	<th class="small-col">Select</th>
+                                        <th class="col-lg-2">Testcase Title</th>
+                                        <th class="col-lg-3">Steps to Execute</th>
+                                        <th class="col-lg-3">Expected Result</th>                                        
+                                        <th class="col-lg-1">Result</th>
+                                        <th class="col-lg-1">BugID</th>
+                                        <th class="col-lg-2">Comment</th>
+                                        
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                               {% for eh  in execution_history %}
+                                	 <tr>
+                                        <td class="small-col"><input type="checkbox" class="chk" value="{{eh.id}}"></td>  
+                                    
+                                        <td><a href="javascript:tc_execution_history({{eh.testcase.id}});">{{eh.testcase.title|linebreaks}}</a></td>
+                                        <td>{{eh.testcase.steps|linebreaks}}</td>
+                                        <td>{{eh.testcase.expected_result|linebreaks}}</td>
+                                        {% if eh.result == 'PASS'%}
+                                          <td class="text-green">{{eh.result|linebreaks}}</td>
+                                        {% elif eh.result == 'FAIL' %}
+                                          <td class="text-red">{{eh.result|linebreaks}}</td>
+                                        {% elif eh.result == 'NAp' %}
+                                          <td class="text-blue">{{eh.result|linebreaks}}</td>
+                                        {% else %}
+                                          <td>{{eh.result|linebreaks}}</td>
+                                        {%endif%}
+                                        {% if eh.bugid == 0 %}
+
+                                          <td>-</td>
+                                        {%else%}
+                                          <td class="text-red">{{eh.bugid|linebreaks}}</td>
+                                        {%endif%}
+
+
+                                        {% if eh.comment == '' %}
+
+                                          <td>-</td>
+                                        {%else%}
+                                          <td>{{eh.comment|linebreaks}}</td>
+                                        {%endif%}
+                                        
+                                        
+                                    </tr>
+                               {% endfor %}     
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                      <th class="small-col">Select</th>
+                                        <th class="col-lg-2">Testcase Title</th>
+                                        <th class="col-lg-3">Steps to Execute</th>
+                                        <th class="col-lg-3">Expected Result</th>                                        
+                                        <th class="col-lg-1">Result</th>
+                                        <th class="col-lg-1">BugID</th>
+                                        <th class="col-lg-2">Comment</th>
+                                        
+                                        
+                                    </tr>
+                                </tfoot>
+                            </table> 
+                        
+                   
+ 
+		</div>
+		
+  <div class="modal fade bs-example-modal-lg" id="fail_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+               <h4 class="modal-title" id="myModalLabel">Enter failure details</h4>
+                          </div>
+          <div class="modal-body">
+            <form class="form-horizontal">
+              {% csrf_token %}
+<fieldset>
+
+<!-- Form Name -->
+
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="bugid">Bug ID</label>  
+  <div class="col-md-4">
+  <input id="bugid" name="bugid" type="text" placeholder="Enter bug ID" class="form-control input-md" required="">
+  <span class="help-block">If testcase is failing, enter Bug ID.</span>  
+  </div>
+</div>
+
+<!-- Textarea -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="comment">Comment</label>
+  <div class="col-md-4">                     
+    <textarea class="form-control" id="fail_comment" name="comment"></textarea>
+  </div>
+</div>
+
+</fieldset>
+</form>
+
+          
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="failure_save_btn">Save</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <div class="modal fade bs-example-modal-lg" id="nap_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+               <h4 class="modal-title" id="myModalLabel">Enter details</h4>
+                          </div>
+          <div class="modal-body">
+            <form class="form-horizontal">
+              {% csrf_token %}
+<fieldset>
+
+<!-- Form Name -->
+
+
+<!-- Text input-->
+
+
+<!-- Textarea -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="comment">Comment</label>
+  <div class="col-md-4">                     
+    <textarea class="form-control" id="nap_comment" name="comment"></textarea>
+  </div>
+</div>
+
+</fieldset>
+</form>
+
+          
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="nap_save_btn">Save</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+
+  <div class="modal fade bs-example-modal-lg" id="comment_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+               <h4 class="modal-title" id="myModalLabel">Enter Comments</h4>
+                          </div>
+          <div class="modal-body">
+            <form class="form-horizontal">
+              {% csrf_token %}
+<fieldset>
+
+<!-- Form Name -->
+
+
+<!-- Text input-->
+
+
+<!-- Textarea -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="comment">Comment</label>
+  <div class="col-md-4">                     
+    <textarea class="form-control" id="normal_comment" name="comment"></textarea>
+  </div>
+</div>
+
+</fieldset>
+</form>
+
+          
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="comment_save_btn">Save</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+</div>
+
+
+<div class="modal fade bs-example-modal-lg" id="history_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+               <h4 class="modal-title" id="myModalLabel">Execution History</h4>
+          </div>
+          <div class="modal-body">
+            <table id="history_table" class="table table-bordered" cellspacing="0" >
+                                <thead>
+                                    <tr>
+                                        <th class="col-lg-2">Testplan</th>
+                                        <th class="col-lg-2">Execution Task</th>
+                                        <th class="col-lg-1">Build</th>
+                                        <th class="col-lg-1">Result</th>
+                                        <th class="col-lg-1">BugID</th>                                        
+                                        <th class="col-lg-2">Comment</th>
+                                        <th class="col-lg-1">Executed By</th>
+                                        <th class="col-lg-2">Modified Date</th>
+                                        
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody id="history_table_body">
+                               
+                                   
+                               
+                                </tbody>
+                                
+                            </table> 
+            
+          
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+</div>
+
+<script>
+
+//alert("gesds");
+$('#result_table').dataTable({
+        stateSave: true
+    });
+
+
+
+  //iCheck for checkbox and radio inputs
+  
+ $("#check-all").on('ifUnchecked', function(event) {
+    //Uncheck all checkboxes
+    
+    $(".icheckbox_minimal").removeClass('checked');
+    $(".icheckbox_minimal").attr('aria-checked',false);
+    //$("input[type='checkbox']", ".table-mailbox").iCheck("uncheck");
+});
+//When checking the checkbox
+$("#check-all").on('ifChecked', function(event) {
+    //Check all checkboxes
+    $(".icheckbox_minimal").addClass('checked');
+    $(".icheckbox_minimal").attr('aria-checked',true);
+    $(".chk").prop('checked', true);
+    
+    //$("input[type='checkbox']", ".table-mailbox").iCheck("check");
+});
+
+function tc_execution_history(testcase_id){
+  
+  $.ajax({
+
+      type:"POST",
+      url :"/execution/executionhistory/",
+      data : {"tc_id": testcase_id},
+      success : execution_history_success,
+                
+      dataType : "json"
+      
+    });
+    
+}
+
+function execution_history_success(data,a,b)
+{
+  //$("#history_table_body").html(data);
+  
+  var table_html = "";
+  var l = data.length;
+  
+  
+  for(var i=0; i<l; i++)
+  {
+    table_html += '<tr><td>'+data[i].testplan+
+                  '</td><td>'+data[i].execution_task+
+                  '</td><td>'+data[i].build+
+                  '</td><td>'+data[i].result+
+                  '</td><td>'+data[i].bugid+
+                  '</td><td>'+data[i].comment+
+                  '</td><td>'+data[i].executed_by+
+                  '</td><td>'+data[i].last_modified_date+'</td></tr>';
+  }
+  $("#history_table_body").html(table_html);
+  if(l==0)
+  {
+    alert("No history for this testcase.");
+  }
+  else{
+    $('#history_modal').modal('show')
+  }
+
+}
+
+$("#pass_btn").click(function(){
+  var chkArray = [];
+  var result = "PASS";
+  var entered_comment = "";
+  var bugid=0;
+  /* look for all checkboes that have a class 'chk' attached to it and check if it was checked */
+  $(".chk:checked").each(function() {
+    //chkArray.push($(this).val());
+    chkArray.push({
+      eh_id: $(this).val(),
+      eh_result: result,
+      eh_bugid:bugid,
+      comment: entered_comment
+    });
+  });
+  if(chkArray.length == 0)
+  {
+    alert("Select at least one testcase");
+  }
+  else{
+    executeTestCase(chkArray);
+  }
+
+});
+
+
+
+$("#fail_btn").click(function(){
+  var chkArray = [];
+  var result = "FAIL";
+  var entered_comment = "";
+
+  $(".chk:checked").each(function() {
+    //chkArray.push($(this).val());
+    chkArray.push({
+      eh_id: $(this).val(),
+      eh_result: result,
+      eh_bugid:bugid,
+      comment: entered_comment
+    });
+  });
+
+  if(chkArray.length == 0)
+  {
+    alert("Select at least one testcase");
+  }
+  else
+  {
+    $('#fail_modal').modal('show')
+  }
+
+});
+
+$("#failure_save_btn").click(function(){
+
+  var chkArray = [];
+  var result = "FAIL";
+  var entered_comment = $("#fail_comment").val();
+  var bugid = $("#bugid").val();
+  $(".chk:checked").each(function() {
+    //chkArray.push($(this).val());
+    chkArray.push({
+      eh_id: $(this).val(),
+      eh_result: result,
+      eh_bugid:bugid,
+      comment: entered_comment
+    });
+  });
+  if(chkArray.length == 0)
+  {
+    alert("Select at least one testcase");
+  }
+  else
+  {
+    executeTestCase(chkArray);
+  }
+
+});
+
+$("#nap_btn").click(function(){
+  var chkArray = [];
+  var entered_comment = "";
+  var result = "NAp";
+  
+  /* look for all checkboes that have a class 'chk' attached to it and check if it was checked */
+  $(".chk:checked").each(function() {
+    //chkArray.push($(this).val());
+    chkArray.push({
+      eh_id: $(this).val(),
+      eh_result: result,
+      
+      comment: entered_comment
+    });
+  });
+  if(chkArray.length == 0)
+  {
+    alert("Select at least one testcase");
+  }
+  else{
+    $('#nap_modal').modal('show')
+  }
+
+});
+
+$("#nap_save_btn").click(function(){
+
+  var chkArray = [];
+  var result = "NAp";
+  var entered_comment = $("#nap_comment").val();
+  
+  $(".chk:checked").each(function() {
+    //chkArray.push($(this).val());
+    chkArray.push({
+      eh_id: $(this).val(),
+      eh_result: result,
+      
+      comment: entered_comment
+    });
+  });
+  if(chkArray.length == 0)
+  {
+    alert("Select at least one testcase");
+  }
+  else
+  {
+    executeTestCase(chkArray);
+  }
+
+});
+
+$("#comment_btn").click(function(){
+  var chkArray = [];
+  var entered_comment = "";
+  
+  /* look for all checkboes that have a class 'chk' attached to it and check if it was checked */
+  $(".chk:checked").each(function() {
+    //chkArray.push($(this).val());
+    chkArray.push({
+      eh_id: $(this).val(),
+      
+      
+      comment: entered_comment
+    });
+  });
+  if(chkArray.length == 0)
+  {
+    alert("Select at least one testcase");
+  }
+  else{
+    $('#nap_modal').modal('show')
+  }
+
+});
+
+$("#comment_save_btn").click(function(){
+
+  var chkArray = [];
+  var result = "NAp";
+  var entered_comment = $("#normal_comment").val();
+  var bugid = 0;
+  $(".chk:checked").each(function() {
+    //chkArray.push($(this).val());
+    chkArray.push({
+      eh_id: $(this).val(),
+      
+      comment: entered_comment
+    });
+  });
+  if(chkArray.length == 0)
+  {
+    alert("Select at least one testcase");
+  }
+  else
+  {
+    executeTestCase(chkArray);
+  }
+
+});
+
+function executeTestCase(chkArray)
+{
+  
+  $.ajax({
+
+      type:"POST",
+      url :"/execution/get/{{testplan.id}}/task/{{execution_task.id}}/execute.psp",
+      data :{"json_data": JSON.stringify(chkArray)},
+      success : function(){
+          window.location.reload();
+      }
+                ,
+      dataType : "text"
+      
+    });
+}
+  //$('#myModal').modal('show')
+  /*var chkArray = [];
+  var json_var = [];
+  var result = "PASS";
+  var entered_comment = "Easy comment";
+  
+  
+  $(".chk:checked").each(function() {
+    //chkArray.push($(this).val());
+    chkArray.push({
+      eh_id: $(this).val(),
+      eh_result: result,
+      comment: entered_comment
+    });
+  });
+
+  
+ 
+  alert(chkArray);
+
+});
+
+/*$(".chk").on("click", function() {
+      $('.chk').prop('checked', true);
+      alert("sandas");
+  //  setPopover(this);
+   // e.stopPropagation();
+    //}
+    
+});*/
+	
+	
+	
+	/*$('#result_table').dataTable({
+			'stateSave': true,
+			
+			"iDisplayLength": 50,
+		});
+		var filter_by = "{{filter_by}}";
+		
+		switch(filter_by){
+			
+			case "Passed":
+				$("#result").val("pass");
+				break;
+			case "Failed":
+				$("#result").val("fail");
+				break;
+			case "Not Applicable":
+				$("#result").val("nap");
+				break;
+			case "Not Executed":
+				$("#result").val("ne");
+				break;
+			case "Executed":
+				$("#result").val("executed");
+				break;
+				
+			default:
+				$("#result").val("all")
+		}
+		
+	    $('#result').change(function() {
+	    	
+	    	var by = $("#result option:selected").val();
+	    	window.location.href = "/execution/get/"+"{{ execution.id }}"+"/filter/?by="+by;	
+	        
+	        
+	    });
+
+	    function returnSuccess(data, textStatus, jqXHR)
+		{
+	    	
+	    	
+	    	
+		}	*/
+
+	
+	
+
+</script>
+                  
+{% endblock %}
+
+

@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="page-wrapper">
+
+            <div class="container-fluid">
+				
+                
+                <div class="row">
+                		<div class="col-lg-12">
+	                		<h2 class="page-header">
+	                            Your Statastics
+	                        </h2>
+	                    </div>
+                		
+                        <div class="col-lg-3 col-xs-6">
+                            <!-- small box -->
+                            <div class="small-box bg-aqua">
+                                <div class="inner">
+                                    <h3>
+                                        {{task_allocated}}
+                                    </h3>
+                                    <p>
+                                        Tasks allocated to you.
+                                    </p>
+                                </div>
+                                <div class="icon">
+                                    <i class="ion ion-stats-bars"></i>
+                                </div>
+                                
+                            </div>
+                        </div><!-- ./col -->
+                        <div class="col-lg-3 col-xs-6">
+                            <!-- small box -->
+                            <div class="small-box bg-yellow">
+                                <div class="inner">
+                                    <h3>
+                                        {{testcases_executed_last_week}}
+                                    </h3>
+                                    <p>
+                                        Testcases executed by you in last 7 days
+                                    </p>
+                                </div>
+                                <div class="icon">
+                                    <i class="ion ion-stats-bars"></i>
+                                </div>
+                                
+                            </div>
+                        </div><!-- ./col -->
+                        <div class="col-lg-3 col-xs-6">
+                            <!-- small box -->
+                            <div class="small-box bg-green">
+                                <div class="inner">
+                                    <h3>
+                                        {{testcases_passed_last_week}}
+                                    </h3>
+                                    <p>
+                                        Testcases passed by you in last 7 days
+                                    </p>
+                                </div>
+                                <div class="icon">
+                                    <i class="ion ion-pie-graph"></i>
+                                </div>
+                                
+                            </div>
+                        </div><!-- ./col -->
+                        <div class="col-lg-3 col-xs-6">
+                            <!-- small box -->
+                            <div class="small-box bg-red">
+                                <div class="inner">
+                                    <h3>
+                                        {{testcases_failed_last_week}}
+                                    </h3>
+                                    <p>
+                                        Testcases failed by you in last 7 days
+                                    </p>
+                                </div>
+                                <div class="icon">
+                                    <i class="ion ion-pie-graph"></i>
+                                </div>
+                                
+                            </div>
+                        </div><!-- ./col -->
+                    </div>
+                    
+                    
+               		<h2 class="page-header">
+                           Tasks allocated to you
+                    </h2>
+                    <table class="table">
+                    <tbody>
+                    
+                    <tr>
+                                            
+	                     <th style="width: 10%">Testplan</th>
+	                     <th style="width: 30%">Task Title</th>
+	                     <th style="width: 40%">Progress</th>
+	                     
+	                     <th style="width: 40px">% Completion</th>
+	                 </tr>
+                    {% for execution_task in execution_tasks %}
+                    	<tr>
+                                               
+                            <td>{{execution_task.testplan.title}}</td>
+                            <td><a href="/execution/get/{{execution_task.testplan.id}}/task/{{execution_task.id}}/">{{execution_task.title}}</a></td>
+                            <td>
+                                <div class="progress xs progress-striped">
+                                <div class="progress-bar progress-bar-success" style="width: {{execution_task.status}}%"></div>
+                            </div>
+                            <td><span class="badge bg-green">{{execution_task.status}}%</span></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    </table>
+					
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+         
+        <!-- /#page-wrapper -->
+
+    </div>
+    
+
+
+{% endblock %}

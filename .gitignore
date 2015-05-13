@@ -1,0 +1,63 @@
+!/.gitignore
+*~
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# C extensions
+*.so
+
+# Distribution / packaging
+bin/
+build/
+develop-eggs/
+dist/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+CACHE/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+
+# Translations
+*.mo
+
+# Mr Developer
+.mr.developer.cfg
+.project
+.pydevproject
+.directory
+# Rope
+.ropeproject
+
+# Django stuff:
+*.log
+*.pot
+media/application_ui/
+media/avatar/
+media/brand_banners/
+media/brand_logos/
+media/category_banners/
+media/category_images/
+media/product_images/
+media/supplier_banners/
+media/thumbnails/
+media/certificate_images/
+# Sphinx documentation
+docs/_build/

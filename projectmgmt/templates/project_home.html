@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% include 'project_base.html' %}
+
+{% block content %}
+
+
+<div id="page-wrapper" class = "col-lg-12">
+
+            <div class="container-fluid">
+				
+                <!-- Page Heading -->
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">Projects
+                             <small>All projects</small>
+                        </h1>
+                        
+                        
+                    </div>
+                    <ol class="breadcrumb">
+						  <li><a href="/">Home</a></li>
+						  <li class="active">Projects</li>
+					</ol>
+                </div>
+                <!-- /.row -->
+
+                <div class="row">
+                    
+                    
+                <div>
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+         
+        <!-- /#page-wrapper -->
+
+    </div>
+    
+   
+   
+   <div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">Current projects</div>
+  <div class="panel-body">
+    <p><b>Total projects: {{ projects.count }}</b></p>
+  </div>
+
+  <!-- List group -->
+  <ul class="list-group">
+  
+  {% for project in projects %}
+    <li class="list-group-item"><a href="/project/get/{{ project.id }}">{{project.name}}</a></li>
+    
+  {% endfor %} 
+   </ul>
+</div>
+<!--  <a class="btn btn-primary" href="/project/add/" role="button">Add New</a>-->
+                    
+{% endblock %}
+
+
+
+

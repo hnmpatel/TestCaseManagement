@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+<div id="page-wrapper" class = "col-lg-12">
+
+            <div class="container-fluid">
+				
+                <!-- Page Heading -->
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">Allocate Task
+                             
+                        </h1>
+                        
+                    </div>
+                    <ol class="breadcrumb">
+						  <li><a href="/">Home</a></li>
+						  <li><a href="/execution">Test Plan Home</a></li>
+						  <li class="active">Allocate new task</li>
+					</ol>
+                </div>
+                <!-- /.row -->
+
+                <div class="row">
+                    
+                    
+                <div>
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+         
+        <!-- /#page-wrapper -->
+
+    </div>
+<div class="panel panel-default">
+ 
+  <div class="panel-heading">{{testplan.title}}</div>
+  <div class="panel-body">
+    <p>{{testplan.description}}</p>
+  </div>
+
+  
+  <table class="table">
+  	<tr>
+  		<th>Project</th>
+  		<th>Build</th>
+  		<th>Started on</th>
+  		
+  	</tr>
+  	<tr>
+  		<td>{{testplan.project}}</td>
+  		<td>{{testplan.build.version}}</td>
+  		<td>{{testplan.start_date}}</td>
+  		
+  	</tr>
+  </table>
+</div>
+<form class="form-horizontal" method="POST" action="/execution/get/{{testplan.id}}/allocate/">
+{% csrf_token %}
+<fieldset>
+
+<!-- Form Name -->
+<legend>Create new task allocation</legend>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="title">Title</label>  
+  <div class="col-md-5">
+  <input id="title" name="title" type="text" placeholder="Title text" class="form-control input-md" required="">
+  <span class="help-block">Example: Beta lifecycle for 4.3 allocated to Aakash</span>  
+  </div>
+</div>
+<!-- Textarea -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="description">Description</label>
+  <div class="col-md-5">                     
+    <textarea class="form-control" id="description" name="description" placeholder="Description of this task"></textarea>
+  </div>
+</div>
+<!-- Select Basic -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="allocate_to">Allocate To</label>
+  <div class="col-md-5">
+    <select id="allocate_to" name="allocate_to" class="form-control">
+      {% for user in users %}
+      <option value="{{user.id}}">{{user.username}}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>
+
+
+
+<!-- Select Basic -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="category">Category (Module)</label>
+  <div class="col-md-5">
+    <select id="category" name="category" class="form-control">
+    {% for category in testplan.project.category_set.all %}
+      <option value="{{category.id}}">{{category.name}}</option>
+    {% endfor %}
+    </select>
+  </div>
+</div>
+
+
+<!-- Select Multiple -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="client_device">Select Device</label>
+  <div class="col-md-5">
+    <select id="client_device" name="client_device" class="form-control">
+      {% for client_device in client_devices %}
+      	<option value="{{client_device.id}}">{{client_device.client_device}} - {{client_device.operating_system}}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>
+
+<!-- Select Multiple -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="browsers">Select Browsers</label>
+  <div class="col-md-5">
+    <select id="browsers" name="browsers" class="form-control" multiple="multiple">
+     {% for browser in browsers %}
+      <option value="{{browser.id}}">{{browser.browser}}</option>
+     {% endfor %}
+    </select>
+  </div>
+</div>
+
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="submit_btn"></label>
+  <div class="col-md-4">
+    <button id="submit_btn" name="submit_btn" class="btn btn-primary">Allocate</button>
+  </div>
+</div>
+
+</fieldset>
+</form>
+
+  
+   
+                    
+{% endblock %}
+
+
+
+

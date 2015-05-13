@@ -1,0 +1,18 @@
+body{
+	text-align : center;
+}
+
+#page {
+	width : 968px;
+	text-align : left;
+	margin : 10px auto 10px auto;
+	background-color : white;
+}
+
+
+#content {
+	/*float : left;
+	width : 608px;*/
+	border : 1px solid green;
+	padding : 10px;
+}

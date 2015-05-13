@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% include 'execution_base.html' %}
+
+{% block content %}
+
+
+<div id="page-wrapper" class = "col-lg-12">
+
+            <div class="container-fluid">
+				
+                <!-- Page Heading -->
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">Current Testplans                             
+                        </h1>
+                        
+                    </div>
+                    <ol class="breadcrumb">
+						  <li><a href="/">Home</a></li>
+						  <li><a href="/execution/">Test Plans</a></li>
+						  <li class="active">{{testplan.title}}</li>
+					</ol>
+                </div>
+                <!-- /.row -->
+
+                <div class="row">
+                    
+                    
+                <div>
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+         
+        <!-- /#page-wrapper -->
+
+    </div>
+    
+   
+   
+   <div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">Current task allocation summary</b></div>
+  	<div class="panel-body">
+   
+  		<div class="box">
+                                <div class="box-header">
+
+                                    {% if user.groups.all.0.name == "qa_lead" %}
+                                    <h3 class="box-title">Allocated Tasks in {{testplan.title}}</h3>
+                                    {% elif user.groups.all.0.name == "tester" %}
+                                    <h3 class="box-title">Tasks allocated to me in {{testplan.title}}</h3>
+                                    {% endif %}
+                                    
+                                </div><!-- /.box-header -->
+                                <div class="box-body no-padding">
+                                    <table class="table table-striped">
+                                        <tbody><tr>
+                                            
+                                            <th style="width: 10%">Allocated To</th>
+                                            <th style="width: 30%">Task Title</th>
+                                            <th style="width: 40%">Progress</th>
+                                            
+                                            <th style="width: 40px">% Completion</th>
+                                        </tr>
+                                    {% if user.groups.all.0.name == "qa_lead" %}
+                                        {% for execution_task in execution_tasks %}
+                                        <tr>
+                                            
+                                            <td>{{execution_task.allocated_to}}</td>
+                                            <td><a href="/execution/get/{{testplan.id}}/task/{{execution_task.id}}/">{{execution_task.title}}</a></td>
+                                            <td>
+                                               <div class="progress xs progress-striped">
+                                                    <div class="progress-bar progress-bar-success" style="width: {{execution_task.status}}%"></div>
+                                                </div>
+                                            </td>
+                                            <td><span class="badge bg-green">{{execution_task.status}}%</span></td>
+                                        </tr>
+                                        {%endfor%}
+                                    {% elif user.groups.all.0.name == "tester"%}
+                                        {% for execution_task in execution_tasks %}
+                                            {% if execution_task.allocated_to == user %}
+                                            <tr>
+                                               
+                                                <td>{{execution_task.allocated_to}}</td>
+                                                <td><a href="/execution/get/{{testplan.id}}/task/{{execution_task.id}}/">{{execution_task.title}}</a></td>
+                                                <td>
+                                                    <div class="progress xs progress-striped">
+                                                    <div class="progress-bar progress-bar-success" style="width: {{execution_task.status}}%"></div>
+                                                </div>
+                                                <td><span class="badge bg-red">{{execution_task.status}}%</span></td>
+                                            </tr>
+                                            {% endif %}
+                                        {%endfor%}
+
+                                    {%endif%}
+                                    </tbody></table>
+                                </div>
+                            </div>
+
+  
+	</div>	
+</div>
+{% if user.groups.all.0.name == "qa_lead" %}
+<a class="btn btn-primary" href="/execution/get/{{testplan.id}}/allocate/" role="button">Create New Task Allocation</a>
+{%endif%}
+                    
+{% endblock %}
+
+
+
+

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page_title %} TestCase Mangement | TestCases {% endblock %}
+
+{% block add_script %}
+    <script src="{% static 'assets/js/testcase_ajax.js' %}"></script>
+{% endblock %}
+
+{% block page_header %}
+    <h1 class="page-header">
+        Test Cases
+    </h1>
+{% endblock %}

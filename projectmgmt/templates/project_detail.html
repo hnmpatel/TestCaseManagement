@@ -1,0 +1,285 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="page-wrapper" class = "col-lg-12">
+
+            <div class="container-fluid">
+				
+                <!-- Page Heading -->
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            {{project.name}} 
+                        </h1>
+                        <ol class="breadcrumb">
+						  <li><a href="/">Home</a></li>
+						  <li><a href="/project">Projects</a></li>
+						  <li class="active">Project Details</li>
+						</ol>
+                        
+                    </div>
+                </div>
+                <!-- /.row -->
+
+                <div class="row">
+                    
+                    
+                <div>
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+         
+        <!-- /#page-wrapper -->
+
+    </div>
+    
+ <!--   <div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Project Name</h3>
+  </div>
+  <div class="panel-body">
+    {{project.name}}
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Description</h3>
+  </div>
+  <div class="panel-body">
+    {{project.description}}
+  </div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+    	<h3 class="panel-title">Categories</h3>
+  	</div>
+  	<div class="panel-body">
+  		{% if categories.count > 0  %}
+	    	<ul class="list-group">
+	    		{% for category in categories %}
+	    			<li class="list-group-item">{{ category.name }} -- {{category.description}} </li>
+	    		{% endfor %}
+	  		</ul>
+		{% else %}
+			<div class="panel-body">
+    			No Categories found!!
+  			</div>
+  		{% endif %}
+  	
+  	</div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+    	<h3 class="panel-title">Builds</h3>
+  	</div>
+  	
+	  	<div class="panel-body">
+		  	<div class="row">
+	  			<label class="col-lg-2 control-label" for="build">Select build</label>
+	  				<div class="col-lg-3">
+		  				{% if project.build_set.count > 0  %}
+			    			<select id="build" name="result" class="form-control">
+		   						{% for build in project.build_set.all %}
+		   							<option value="{{build.id}}">{{build.version}}</option>
+		      					{% endfor %}
+		      				</select>
+						{% else %}
+							<div class="panel-body">
+		    					No builds found!!
+		  					</div>
+		  				{% endif %}
+		  		
+		  			</div>
+		  	</div>
+		  	
+		  	<div class="row">
+	  			<label class="col-lg-2 control-label" for="description">Description</label>
+				  	<div class="col-lg-4">
+				  		<p id="description"></p>
+				  	</div>
+		  	</div>
+	  	</div>
+   
+</div>   
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+    	<h3 class="panel-title">Environment used</h3>
+  	</div>
+  	<div class="panel-body">
+  		{% if project.clientdevice_set.count > 0  %}
+	    	<ul class="list-group">
+	    		{% for client_device in project.clientdevice_set.all %}
+	    			<li class="list-group-item">{{ client_device }} -- {{client_device.operating_system}} </li>
+	    		{% endfor %}
+	  		</ul>
+		{% else %}
+			<div class="panel-body">
+    			No Environment details found!!
+  			</div>
+  		{% endif %}
+  	
+  	</div>
+</div> -->
+ <div class="box box-solid">
+                                <div class="box-header">
+                                    <i class="fa fa-fw fa-folder"></i>
+                                    <h3 class="box-title">{{project.name}}</h3>
+                                </div><!-- /.box-header -->
+                                
+                                <div class="box-body">
+                                    <dl class="dl-horizontal">
+                                        <dt><h3><b>Project ID:</b></h3></dt>
+                                        <dd><h3>{{project.id}}</h3></dd>
+                                        <dt><h3><b>Description:</b></h3></dt>
+                                        <dd><h3>{{project.description|linebreaks}}</h3></dd>
+                                        
+                                        <dt><h3><b>Categories:</b></h3></dt>
+                                        {% if categories.count > 0  %}
+                                        	
+                                        		{%for category in project.category_set.all %}
+                                        			<dd><h3>{{category.name}}- <small>{{category.description}}</small></h3></dd>
+                                        		{%endfor%}
+                                       	{%else%}
+                                       		<dd><h3 class="text-red">No categories available!!</h3></dd>
+                                       	{%endif%}
+                                        	
+                                       <dt><h3><b>Latest build:</b></h3></dt>
+                                       {% if project.build_set.all.count > 0  %}
+                                       
+					                  		<dd><h3 class="text-green">{{ latest_version.version }} - <small>{{ latest_version.description|linebreaks }}</small></h3></dd>
+                                       {%else%}
+                                       		<dd><h3 class="text-red">No builds found!!</h3></dd>
+                                       {%endif%}
+                                       
+                                       <dd>
+                                       <!-- Button trigger modal -->
+										<button class="btn btn-primary" data-toggle="modal" data-target="buildsModal" id="showBuild">
+										  More
+										</button>
+										
+										<!-- Modal -->
+										<div class="modal fade bs-example-modal-lg" id="buildsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+										  <div class="modal-dialog modal-lg">
+										    <div class="modal-content">
+										      <div class="modal-header">
+										        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+										        <h4 class="modal-title" id="myModalLabel">All builds for {{project}}</h4>
+										      </div>
+										      <div class="modal-body">
+										      <form class="form-horizontal" method="POST" action="/project/{{project.id}}/builds/add/">
+										      {%csrf_token%}
+<fieldset>
+
+<!-- Form Name -->
+<legend>Add New Build</legend>
+
+<!-- Text input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="version">Build Version</label>  
+  <div class="col-md-5">
+  <input id="version" name="version" type="text" placeholder="Enter build version" class="form-control input-md" required="">
+  <span class="help-block">Ex: 4.3.0.023</span>  
+  </div>
+</div>
+
+<!-- Textarea -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="description">Description</label>
+  <div class="col-md-4">                     
+    <textarea class="form-control" id="description" name="description" placeholder="Description"></textarea>
+  </div>
+</div>
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="add_build"></label>
+  <div class="col-md-4">
+    <button id="add_build" name="add_build" class="btn btn-primary">Add Build</button>
+  </div>
+</div>
+
+</fieldset>
+</form>
+										      
+										      	<div class="box-body no-padding">
+                                    <table class="table">
+                                        <tbody><tr>
+                                            
+                                            <th>Build Version</th>
+                                            <th>Description</th>
+                                            
+                                        </tr>
+                                        {% for build in project.build_set.all %}
+                                        <tr>
+                                            
+                                            	<td>{{build.version}}</td>
+                                            	<td>{{build.description|linebreaks}}</td>
+                                            
+                                        </tr>
+                                        {% endfor %}
+                                       
+                                    </tbody></table>
+                                </div>
+                                
+                                
+										        
+										      </div>
+										      <div class="modal-footer">
+										        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+										      </div>
+										    </div>
+										  </div>
+										</div>
+                                       </dd>
+                                    </dl>
+                                </div><!-- /.box-body -->
+                            </div>
+<script type="text/javascript">	
+
+$('#showBuild').click(function(){
+	$('#buildsModal').modal('show');	
+});
+
+		
+/*
+		$.ajax({
+			type : "GET",
+			url : "/project/getBuildDetails.psp",
+			data : {
+				"build" : $('#build').val()
+			},
+			success : returnSuccess,
+			dataType : "json",
+		});
+	    $('#build').change(function() {
+	    	
+	    	$.ajax({
+	    		type : "GET",
+	    		url : "/project/getBuildDetails.psp",
+	    		data : {
+	    			"build" : $('#build').val()
+	    		},
+	    		success : returnSuccess,
+	    		dataType : "json",
+	    	});
+	        
+	        
+	    });
+	    
+	    function returnSuccess(data, textStatus, jqXHR)
+		{
+	    	$('#description').html(data.description);
+	    	
+	    	
+		}	
+
+	*/
+</script>
+                    
+{% endblock %}
+
+

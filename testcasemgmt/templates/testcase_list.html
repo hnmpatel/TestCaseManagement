@@ -1,0 +1,10 @@
+	{% block testcase_list %}
+		{% for tc in testcases %}
+            <tr>
+			    <td>{{ forloop.counter }}</td>
+			    <td>{{ tc.title }}</td>
+			    <td>{{ tc.steps|linebreaksbr }}</td>
+			    <td>{{ tc.expected_result|linebreaksbr }}</td>
+            </tr>
+		{% endfor %}
+	{% endblock %}

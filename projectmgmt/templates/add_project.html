@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="page-wrapper" class = "col-lg-12">
+
+            <div class="container-fluid">
+				
+                <!-- Page Heading -->
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">Add New Project
+                             
+                        </h1>
+                        
+                    </div>
+                </div>
+                <!-- /.row -->
+
+                <div class="row">
+                    
+                    
+                <div>
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+         
+        <!-- /#page-wrapper -->
+
+    </div>
+    
+<form class="form-horizontal" action="/project/add/" method="post">
+{% csrf_token %}
+<fieldset>
+
+<!-- Form Name -->
+
+
+<!-- Text input-->
+<div class="form-group">
+{% if message %}
+	<div class="alert alert-danger">
+	         <strong>Oh snap!</strong> {{message}}
+	</div>
+{% endif %}
+  <label class="col-md-4 control-label" for="textinput">Project Name</label>  
+  <div class="col-md-6">
+  <input id="proj_name" name="proj_name" type="text" placeholder="Enter project name" required="" class="form-control input-md">
+  <span class="help-block">Example: Gemini 4.2</span>  
+  </div>
+</div>
+
+<!-- Textarea -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="textarea">Description</label>
+  <div class="col-md-4">                     
+    <textarea class="form-control" id="proj_desc" name="proj_desc" required="" placeholder="Enter project description"></textarea>
+  </div>
+</div>
+
+<!-- Button -->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="singlebutton"></label>
+  <div class="col-md-4">
+    <button id="singlebutton" name="singlebutton" class="btn btn-primary" type="submit">Save</button>
+  </div>
+  
+</div>
+
+</fieldset>
+</form>
+
+
+
+   
+   
+   
+                    
+{% endblock %}
+
+

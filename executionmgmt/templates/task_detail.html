@@ -1,0 +1,259 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="page-wrapper" class = "col-lg-12">
+
+            <div class="container-fluid">
+				
+                <!-- Page Heading -->
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            {{testplan.title}} <small>{{ execution_task }}</small>
+                        </h1>
+                        
+                    </div>
+                </div>
+                <!-- /.row -->
+
+                <div class="row">
+                    
+                    
+                <div>
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+         
+        <!-- /#page-wrapper -->
+
+    </div>
+   <div class="box box-solid">
+                                <div class="box-header">
+                                    <i class="fa fa-fw fa-calendar"></i>
+                                    <h3 class="box-title">{{execution_task.title}}</h3>
+                                </div><!-- /.box-header -->
+                                
+                                <div class="box-body">
+                                    <dl class="dl-horizontal">
+                                    	<dt><h5><b>Allocated to:</b></h5></dt>
+                                        <dd><h5>{{execution_task.allocated_to|linebreaks}}</h5></dd>
+                                        <dt><h5><b>Project:</b></h5></dt>
+                                        <dd><h5>{{testplan.title}}</h5></dd>
+                                        <dt><h5><b>Description:</b></h5></dt>
+                                        <dd><h5>{{execution_task.description|linebreaks}}</h5></dd>
+                                        
+                                        <dt><h5><b>Category:</b></h5></dt>
+                                        <dd><h5>{{execution_task.category|linebreaks}}</h5></dd>
+                                       	
+                                        	
+                                       <dt><h5><b>Build:</b></h5></dt>
+                                       <dd><h5>{{testplan.build|linebreaks}}</h5></dd>
+                                       
+                                       <dt><h5><b>Progress:</b></h5></dt>
+                                       <dd>
+                                       
+                                       
+                                       	<div class="progress">
+  												<div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="{{ execution.status }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ execution.status }}%">
+    											Overall Progress: {{ execution_task.status }}%
+  												</div>
+										</div>
+										</dd>
+                                      </dl>
+                                </div><!-- /.box-body -->
+                            </div>
+
+       
+	
+    <div class="row" >
+    				 <div class="col-lg-6">
+    				 <div  style="max-height:470px">
+                        <div  class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><i class="fa fa-clock-o fa-fw"></i> Execution Summary</h3>
+                            </div>
+                            <div class="panel-body" >
+                                <div class="list-group">
+                                
+                                	<a href="#" class="list-group-item">
+                                        <span class="badge">{{ execution_task.start_date }}</span>
+                                        <span class="glyphicon glyphicon-calendar"></span> Started On
+                                    </a>
+                                    <a href="#" class="list-group-item">
+                                        <span class="badge">{{ execution_task.allocated_to }}</span>
+                                        <span class="glyphicon glyphicon-user"></span> Allocated to
+                                    </a>
+                                    <a href="#" class="list-group-item">
+                                        <span class="badge">{{ execution_task.status }}%</span>
+                                        <span class="glyphicon glyphicon-ok"></span> Overall Execution status
+                                    </a>
+                                    
+                                    <a href="/execution/get/{{ execution.id }}/filter/?by=all" class="list-group-item">
+                                        <span id="total" class="badge"></span>
+                                        <span class="glyphicon glyphicon-ok"></span> Total no. of Testcases
+                                    </a>
+                                    
+                                    <a href="/execution/get/{{ execution.id }}/filter/?by=executed" class="list-group-item">
+                                        <span id="executed" class="badge"></span>
+                                        <span class="glyphicon glyphicon-ok"></span> No. of Testcases executed
+                                    </a>
+                                    <a href="/execution/get/{{ execution.id }}/filter/?by=pass" class="list-group-item">
+                                        <span id="passed" class="badge"></span>
+                                        <span class="glyphicon glyphicon-ok"></span> No. of Testcases Passed
+                                    </a>
+                                    
+                                    <a href="/execution/get/{{ execution.id }}/filter/?by=fail" class="list-group-item">
+                                        <span id="failed" class="badge"></span>
+                                        <span class="glyphicon glyphicon-ok"></span> No. of Testcases Failed
+                                    </a>
+                                    
+                                    <a href="/execution/get/{{ execution.id }}/filter/?by=nap" class="list-group-item">
+                                        <span id="nap" class="badge"></span>
+                                        <span class="glyphicon glyphicon-ok"></span> No. of Testcases Not Applicable
+                                    </a>
+                                    
+                                    <a href="/execution/get/{{ execution.id }}/filter/?by=ne" class="list-group-item">
+                                        <span id="ne" class="badge"></span>
+                                        <span class="glyphicon glyphicon-ok"></span> No. of Testcases Not Executed
+                                    </a>
+                                   
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><i class="fa fa-long-arrow-right"></i> Execution Status</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+  
+
+  
+{% with execution_task.executionhistory_set.all|first as first %}
+	
+<a class="btn btn-primary" href="/execution/get/{{ testplan.id }}/task/{{ execution_task.id }}/testcase/" role="button">TestCases</a>
+</div>
+<script>
+
+	var total_tc = parseInt("{{ execution_task.executionhistory_set.count }}");
+	var passed_tc = parseInt("{{execution_task.passed}}");
+	var failed_tc = parseInt("{{execution_task.failed}}");
+	var nap_tc = parseInt("{{execution_task.nap}}");
+	var ne_tc = total_tc-(passed_tc+failed_tc+nap_tc);
+	
+	$("#total").text(total_tc);
+	$("#passed").text("{{execution_task.passed}}");
+	$("#failed").text("{{execution_task.failed}}");
+	$("#nap").text("{{execution_task.nap}}");
+	$("#executed").text(passed_tc+failed_tc+nap_tc);
+	$("#ne").text(ne_tc);
+	
+	//data for graph.
+	var passed_per = ( passed_tc / total_tc ) * 100
+	var failed_per = ( failed_tc / total_tc ) * 100
+	var nap_per = ( nap_tc / total_tc ) * 100
+	var ne_per = 100 - (passed_per+failed_per+nap_per);
+	console.log(passed_per);
+	console.log(failed_per);
+	console.log(nap_per);
+	console.log(ne_per);
+	
+	$("#container").highcharts({
+		
+		colors: ['#173B0B','#FF0000', '#BDBDBD','#F2F5A9'],
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false
+        },
+        title: {
+            text: 'Execution summary of testcases'
+        },
+        tooltip: {
+            pointFormat: '{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        },
+        series: [{
+            type: 'pie',
+            
+            data: [
+                ['Passed',   passed_per],
+                ['Failed',   failed_per],
+                ['Not Executed', ne_per],
+                ['Not Applicable', nap_per],
+            ]
+        }]
+    });
+
+
+	
+  /*      var data = [{
+        	label: "Not Applicable",
+            data: nap_per
+            
+        }, {
+        	label: "Not Executed",
+            data: ne_per
+            
+        }, {
+        	label: "Failed",
+            data: failed_per
+        }, {
+        	label: "Passed",
+            data: passed_per
+        }];
+
+        var plotObj = $.plot($("#flot-pie-chart"), data, {
+            series: {
+                pie: {
+                	
+                    show: true,
+                    
+                    
+                }
+            },
+            grid: {
+                hoverable: true
+            },
+            tooltip: true,
+            tooltipOpts: {
+                content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                shifts: {
+                    x: 20,
+                    y: 0
+                },
+                defaultTheme: false
+            }
+        });*/
+
+ 
+</script>
+ 
+ {% endwith %}                   
+{% endblock %}
+
+
